@@ -1,19 +1,20 @@
 function init() {
   //Dom Elements
   const grid = document.querySelector('.grid')
+  const scoreCard = document.querySelector('#score')
   const cells = []
 
   //Grid Variables
   const height = 15
   const width = 15
 
-  //Score Variables
+  //Points Increment Variables
   const jumpPoints = 10
 
   //Sprite Variables
   let x = 7
   let y = 14
-  let score = 0
+  let scoreTally = 0
   let furthestJump = 0
 
   //Functions
@@ -36,6 +37,7 @@ function init() {
 
   //* This Section deals with the movement of the sprite and human input from the keyboard
   // Adds and removes CSS Classes to the individual squares
+  
   function goSprite(direction) {
     // console.log(`sprite went ${direction}`)
     if (direction === 'start') {
@@ -43,24 +45,32 @@ function init() {
     }
     if (direction === 'U' && y !== 0) {
       // console.log('move up')
+      cells[y][x].style.backgroundImage = ''
       cells[y][x].classList.remove('sprite')
       y--
       cells[y][x].classList.add('sprite')
+      cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_fwd.png)'
     } else if (direction === 'D' && y !== 14) {
       // console.log('move down')
+      cells[y][x].style.backgroundImage = ''
       cells[y][x].classList.remove('sprite')
       y++
       cells[y][x].classList.add('sprite')
+      cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_bwd.png)'
     } else if (direction === 'L' && x !== 0) {
       // console.log('move left')
+      cells[y][x].style.backgroundImage = ''
       cells[y][x].classList.remove('sprite')
       x--
       cells[y][x].classList.add('sprite')
+      cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_left.png)'
     } else if (direction === 'R' && x !== 14) {
       // console.log('move right')
+      cells[y][x].style.backgroundImage = ''
       cells[y][x].classList.remove('sprite')
       x++
       cells[y][x].classList.add('sprite')
+      cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_right.png)'
     }
   }
 
@@ -78,23 +88,6 @@ function init() {
     goSprite('R')
   }
 
-
-  // Increments the furthest jump variable depending on how far the sprite has travelled previously
-  // Also increments score variable by Jump Points
-  function scoreIncrease() {
-    if (height - y - 1 > furthestJump) {
-      furthestJump++
-      score += jumpPoints
-    }
-  }
-
-
-
-
-  // TODO: On Key Down Change sprite to walking image then back to still on Key up
-
-
-
   window.onkeyup = function (event) {
     switch (event.keyCode) {
       case 37:
@@ -111,6 +104,28 @@ function init() {
         break
     }
   }
+
+
+  // Increments the furthest jump variable only if the sprite is advancing further than it has previously
+  // Also increments score variable by Jump Points and pushes score to score span in HTML
+  function scoreIncrease() {
+    if (height - y - 1 > furthestJump) {
+      furthestJump++
+      scoreTally += jumpPoints
+      scoreCard.textContent = scoreTally
+    }
+  }
+
+
+
+
+
+
+  // TODO: On Key Down Change sprite to walking image then back to still on Key up
+
+
+
+
   createCells()
 
 
