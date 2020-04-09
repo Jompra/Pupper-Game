@@ -7,11 +7,18 @@ function init() {
   const height = 15
   const width = 15
 
+  //Score Variables
+  const jumpPoints = 10
+
   //Sprite Variables
   let x = 7
   let y = 14
+  let score = 0
+  let furthestJump = 0
 
   //Functions
+
+  // Creates individual grid cells
   function createCells() {
     for (let i = 0; i < height; i++) {
       const row = []
@@ -24,44 +31,71 @@ function init() {
       cells.push(row)
     }
     console.log(cells)
-    goSprite()
+    goSprite('start')
   }
 
-  function goSprite() {
-    console.log('initialize sprite ran')
-    cells[y][x].classList.add('sprite')
-
+  //* This Section deals with the movement of the sprite and human input from the keyboard
+  // Adds and removes CSS Classes to the individual squares
+  function goSprite(direction) {
+    // console.log(`sprite went ${direction}`)
+    if (direction === 'start') {
+      cells[y][x].classList.add('sprite')
+    }
+    if (direction === 'U' && y !== 0) {
+      // console.log('move up')
+      cells[y][x].classList.remove('sprite')
+      y--
+      cells[y][x].classList.add('sprite')
+    } else if (direction === 'D' && y !== 14) {
+      // console.log('move down')
+      cells[y][x].classList.remove('sprite')
+      y++
+      cells[y][x].classList.add('sprite')
+    } else if (direction === 'L' && x !== 0) {
+      // console.log('move left')
+      cells[y][x].classList.remove('sprite')
+      x--
+      cells[y][x].classList.add('sprite')
+    } else if (direction === 'R' && x !== 14) {
+      // console.log('move right')
+      cells[y][x].classList.remove('sprite')
+      x++
+      cells[y][x].classList.add('sprite')
+    }
   }
+
   function moveUp() {
-    if (y === 0) return
-    console.log('move up')
-    cells[y][x].classList.remove('sprite')
-    y--
-    cells[y][x].classList.add('sprite')
+    goSprite('U')
+    scoreIncrease()
   }
   function moveDown() {
-    if (y === 14) return
-    console.log('move Dn')
-    cells[y][x].classList.remove('sprite')
-    y++
-    cells[y][x].classList.add('sprite')
+    goSprite('D')
   }
   function moveLeft() {
-    if (x === 0) return
-    console.log('move L')
-    cells[y][x].classList.remove('sprite')
-    x--
-    cells[y][x].classList.add('sprite')
+    goSprite('L')
   }
   function moveRight() {
-    if (x === 14) return
-    console.log('move R')
-    cells[y][x].classList.remove('sprite')
-    x++
-    cells[y][x].classList.add('sprite')
+    goSprite('R')
   }
 
-  document.onkeydown = function (event) {
+
+  // Increments the furthest jump variable depending on how far the sprite has travelled previously
+  // Also increments score variable by Jump Points
+  function scoreIncrease() {
+    if (height - y - 1 > furthestJump) {
+      furthestJump++
+      score += jumpPoints
+    }
+  }
+
+
+
+
+  // TODO: On Key Down Change sprite to walking image then back to still on Key up
+
+
+
+  window.onkeyup = function (event) {
     switch (event.keyCode) {
       case 37:
         moveLeft()
@@ -76,7 +110,6 @@ function init() {
         moveDown()
         break
     }
-
   }
   createCells()
 
