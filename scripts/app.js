@@ -8,14 +8,15 @@ function init() {
 
   //Grid Variables
   const height = 15
-  const width = 14
+  const width = 15
+  const homeCells = []
 
   //Points Increment Variables
   const jumpPoints = 10
 
   //Character Sprite Variables
   let x = 7
-  let y = 13
+  let y = 14
   let scoreTally = 0
   let furthestJump = 0
 
@@ -150,6 +151,9 @@ function init() {
         detectCollision()
         break
     }
+  }
+
+  function checkHome(){
   }
 
 
