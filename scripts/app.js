@@ -131,20 +131,55 @@ function init() {
 
   //* Deals with obstical Movement
 
-
-  function advanceObstical() {
-    cells[13][lineThirteenLead].style.backgroundColor = ''
-    if (lineThirteenLead < width - 1){
-      lineThirteenLead++
-    } else {
-      lineThirteenLead = 0
-    }
-    cells[13][lineThirteenLead].style.backgroundColor = 'red'
+  //takes a 2D array as [[x position, y position], [x position, y position]]
+  function initializeZombies(positions) {
+    console.log(positions)
+    positions.forEach(coords => {
+      console.log(coords)
+      cells[coords[0]][coords[1]].style.backgroundColor = 'red'
+    })
   }
-  
+
+  function advanceZombies() {
+    for (let i = 0; i < initZombie.length; i++) {
+      console.log(`initial positions = ${initZombie[i]}`)
+      cells[initZombie[i][0]][initZombie[i][1]].style.backgroundColor = ''
+      if (initZombie[i][0] % 2 === 0 && initZombie[i][1] === width - 1){
+        initZombie[i][1] = 0
+      } else if (initZombie[i][0] % 2 === 0) {
+        initZombie[i][1]++
+      } else if (initZombie[i][0] % 2 !== 0 && initZombie[i][1] === 0) {
+        initZombie[i][1] = width - 1
+      } else {
+        initZombie[i][1]--
+      }
+      console.log(`advance positions = ${initZombie[i][1]}`)
+      cells[initZombie[i][0]][initZombie[i][1]].style.backgroundColor = 'red'
+    }
+  }
 
 
-  setInterval(advanceObstical, 1000)
+  // 
+  const initZombie = [[13, 7], [13, 10], [12, 7], [11, 7], [10, 7]]
+  initializeZombies(initZombie)
+  setInterval(() => {
+    advanceZombies(initZombie)
+  }, 1000)
+
+
+  // function advanceObstical() {
+  //   cells[13][lineThirteenLead].style.backgroundColor = ''
+  //   if (lineThirteenLead < width - 1){
+  //     lineThirteenLead++
+  //   } else {
+  //     lineThirteenLead = 0
+  //   }
+  //   cells[13][lineThirteenLead].style.backgroundColor = 'red'
+  // }
+
+
+
+  // setInterval(advanceObstical, 1000)
 
 
 }
