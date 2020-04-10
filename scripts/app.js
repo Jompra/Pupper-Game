@@ -2,29 +2,33 @@ function init() {
   //Dom Elements
   const grid = document.querySelector('.grid')
   const scoreCard = document.querySelector('#score')
+  const startlives = 5
   const cells = []
+  let livesRemaining = startlives
 
   //Grid Variables
   const height = 15
-  const width = 15
+  const width = 14
 
   //Points Increment Variables
   const jumpPoints = 10
 
   //Character Sprite Variables
   let x = 7
-  let y = 14
+  let y = 13
   let scoreTally = 0
   let furthestJump = 0
 
   //Obstacle Sprite Variables
   // TODO: find a better way of generating Zombie Initializer Lists. Harder Levels should have more!!!
-  //Zombie Array = [y position, x position, Sprite Identifier]
-  const initZombie = [[13, 7], [13, 10], [12, 7], [11, 7], [10, 7]]
+  // TODO: Get all zombies for level 1 set
+  //Zombie Array = [y position, x position] Sprite identifier added to end by randomizeZombies below
+  const initZombie = [[12, 3], [12, 7], [12, 11], [12, 13], [12, 8], [11, 7], [10, 7]]
 
   //Functions
-  // Randomises zombie Sprite number
+  // Randomises zombie Sprite number (get different zombie sprites each reload)
   //TODO make random number correct multiplier depending on number of sprites also refactor this so Math.Random is only called once!
+  
   function randomizeZombies(){
     for (let i = 0; i <= initZombie.length - 1; i++){
       const sprite = Math.ceil(Math.random() * 4)
@@ -32,6 +36,7 @@ function init() {
       console.log(initZombie[i])
     }
   }
+  
   randomizeZombies() // TODO Make this happen at a more appropriate time
   
 
@@ -53,6 +58,21 @@ function init() {
     console.log(cells)
     goSprite('start')
   }
+
+  // function drawLives(){
+  //   for (let i = 0; i < livesRemaining; i++){
+  //     const img = document.createElement('IMG')
+  //     console.log(img)
+  //     console.log(livesRemaining)
+  //     img.src = './assets/life.png'
+  //     livesRemainingDisplay.appendChild(img)
+  // }
+  
+
+  // drawLives()
+
+
+
   // TODO: This needs refactoring. Probably move the UDLR arguments into the onkey function and make a single 'Move' Function.
   // TODO: goSprite Function needs re-factoring to be more efficient
   //* This Section deals with the movement of the sprite and human input from the keyboard
@@ -71,7 +91,7 @@ function init() {
       y--
       cells[y][x].classList.add('sprite')
       cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_fwd.png)'
-    } else if (direction === 'D' && y !== 14) {
+    } else if (direction === 'D' && y !== width - 1) {
       // console.log('move down')
       cells[y][x].style.backgroundImage = ''
       cells[y][x].classList.remove('sprite')
@@ -184,8 +204,10 @@ function init() {
       console.log(`x=${x} y=${y}`)
       cells[y][x].classList.remove('sprite')
       x = 7
-      y = 14
+      y = height - 1
       goSprite('start')
+      livesRemaining--
+      console.log(livesRemaining)
     }
   }
 
