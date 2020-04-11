@@ -1,15 +1,17 @@
 function init() {
   //Dom Elements
   const grid = document.querySelector('.grid')
+  const homeGrid = document.querySelector('.homes')
   const scoreCard = document.querySelector('#score')
   const startlives = 5
   const cells = []
+  const homes = []
   let livesRemaining = startlives
 
   //Grid Variables
   const height = 15
   const width = 15
-  const homeCells = []
+
 
   //Points Increment Variables
   const jumpPoints = 10
@@ -20,7 +22,7 @@ function init() {
   let scoreTally = 0
   let furthestJump = 0
 
-  //Obstacle Sprite Variables
+  //Obstacle and Home Variables
   // TODO: find a better way of generating Zombie Initializer Lists. Harder Levels should have more!!!
   // TODO: Get all zombies for level 1 set
   //Zombie Array = [y position, x position] Sprite identifier added to end by randomizeZombies below
@@ -29,17 +31,17 @@ function init() {
   //Functions
   // Randomises zombie Sprite number (get different zombie sprites each reload)
   //TODO make random number correct multiplier depending on number of sprites also refactor this so Math.Random is only called once!
-  
-  function randomizeZombies(){
-    for (let i = 0; i <= initZombie.length - 1; i++){
+
+  function randomizeZombies() {
+    for (let i = 0; i <= initZombie.length - 1; i++) {
       const sprite = Math.ceil(Math.random() * 4)
       initZombie[i].push(sprite)
       console.log(initZombie[i])
     }
   }
-  
+
   randomizeZombies() // TODO Make this happen at a more appropriate time
-  
+
 
   //Adding Event Listeners
 
@@ -59,6 +61,16 @@ function init() {
     console.log(cells)
     goSprite('start')
   }
+  function createHomes() {
+    for (let i = 0; i < 5; i++) {
+      const home = document.createElement('div')
+      homeGrid.appendChild(home)
+      home.textContent = `home ${i}`
+      homes.push(home)
+      home.style.backgroundImage = 'url(./assets/safe.png)'
+    }
+  }
+  createHomes()
 
   // function drawLives(){
   //   for (let i = 0; i < livesRemaining; i++){
@@ -68,7 +80,7 @@ function init() {
   //     img.src = './assets/life.png'
   //     livesRemainingDisplay.appendChild(img)
   // }
-  
+
 
   // drawLives()
 
@@ -83,6 +95,10 @@ function init() {
   function goSprite(direction) {
     // console.log(`sprite went ${direction}`)
     if (direction === 'start') {
+      cells[y][x].style.backgroundImage = ''
+      cells[y][x].classList.remove('sprite')
+      y = 14
+      x = 7
       cells[y][x].classList.add('sprite')
     }
     if (direction === 'U' && y !== 0) {
@@ -137,10 +153,12 @@ function init() {
       case 37:
         moveLeft()
         detectCollision()
+
         break
       case 38:
         moveUp()
         detectCollision()
+        detectSafe()
         break
       case 39:
         moveRight()
@@ -151,9 +169,6 @@ function init() {
         detectCollision()
         break
     }
-  }
-
-  function checkHome(){
   }
 
 
@@ -177,7 +192,7 @@ function init() {
       let direction = ''
       cells[initZombie[i][0]][initZombie[i][1]].classList.remove('zombie')
       cells[initZombie[i][0]][initZombie[i][1]].style.backgroundImage = ''
-      if (initZombie[i][0] % 2 === 0 && initZombie[i][1] === width - 1){
+      if (initZombie[i][0] % 2 === 0 && initZombie[i][1] === width - 1) {
         initZombie[i][1] = 0
         direction = 'R'
       } else if (initZombie[i][0] % 2 === 0) {
@@ -190,7 +205,7 @@ function init() {
         initZombie[i][1]--
         direction = 'L'
       }
-      
+
       cells[initZombie[i][0]][initZombie[i][1]].classList.add('zombie')
       cells[initZombie[i][0]][initZombie[i][1]].style.backgroundImage = `url(../assets/zombies/${direction}_${initZombie[i][2]}.png)`
     }
@@ -203,8 +218,8 @@ function init() {
     advanceZombies(initZombie)
   }, 500)
 
-  function detectCollision(){
-    if (cells[y][x].classList.contains('zombie')){
+  function detectCollision() {
+    if (cells[y][x].classList.contains('zombie')) {
       console.log(`x=${x} y=${y}`)
       cells[y][x].classList.remove('sprite')
       x = 7
@@ -213,6 +228,31 @@ function init() {
       livesRemaining--
       console.log(livesRemaining)
     }
+  }
+  function detectSafe() {
+    console.log('ran detectSafe')
+    if (x === 1 && y === 1) {
+      console.log(`home Safe in first Home`)
+      homes[0].style.backgroundImage = 'url(./assets/safe_active.png)'
+      goSprite('start')
+    } else if (x === 4 && y === 1) {
+      console.log(`home Safe in second Home`)
+      homes[1].style.backgroundImage = 'url(./assets/safe_active.png)'
+      goSprite('start')
+    } else if (x === 7 && y === 1) {
+      console.log(`home Safe in third Home`)
+      homes[2].style.backgroundImage = 'url(./assets/safe_active.png)'
+      goSprite('start')
+    } else if (x === 10 && y === 1) {
+      console.log(`home Safe in fourth Home`)
+      homes[3].style.backgroundImage = 'url(./assets/safe_active.png)'
+      goSprite('start')
+    } else if (x === 13 && y === 1) {
+      console.log(`home Safe in fifth Home`)
+      homes[4].style.backgroundImage = 'url(./assets/safe_active.png)'
+      goSprite('start')
+    }
+
   }
 
 

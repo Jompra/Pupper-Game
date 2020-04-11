@@ -4,6 +4,7 @@
   justify-content: center;
 }
 
+
 .grid {
   align-items: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
@@ -27,7 +28,25 @@
   background-repeat: no-repeat;
   background-size: contain;
 }
+
 .grid div.zombie{
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.grid-wrapper .homes{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  position: absolute;
+  z-index: 1;
+  height: 100px;
+  width: 780px;
+}
+.homes div{
+  width:150px;
+  height: 100px;
+  background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
 }
