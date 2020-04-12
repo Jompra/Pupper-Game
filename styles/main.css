@@ -17,7 +17,7 @@
 }
 
 .grid div {
-  border: 1px solid lightgrey;
+  /* border: 1px solid lightgrey; */
   flex-grow: 1;
   height: 50px;
   width: 50px;
@@ -46,7 +46,13 @@
 .homes div{
   width:150px;
   height: 100px;
+  color: blue;
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+}
+
+.grid div.train{
+  background-repeat: no-repeat;
+  background-size: cover;
 }

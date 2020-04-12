@@ -25,8 +25,11 @@ function init() {
   //Obstacle and Home Variables
   // TODO: find a better way of generating Zombie Initializer Lists. Harder Levels should have more!!!
   // TODO: Get all zombies for level 1 set
-  //Zombie Array = [y position, x position] Sprite identifier added to end by randomizeZombies below
+  //Obstacle co-ordinates arrays
   const initZombie = [[12, 3], [12, 7], [12, 11], [12, 13], [12, 8], [11, 7], [10, 7]]
+  const initTrain = [[4, 5], [4, 4],[3, 8], [3, 9]]
+  
+
 
   //Functions
   // Randomises zombie Sprite number (get different zombie sprites each reload)
@@ -71,19 +74,24 @@ function init() {
     }
   }
   createHomes()
+  createCells() //TODO <==== Remove this and initiate on click of start button
+  //Draws and advances trains depending on even/odd rows
+  
 
-  // function drawLives(){
-  //   for (let i = 0; i < livesRemaining; i++){
-  //     const img = document.createElement('IMG')
-  //     console.log(img)
-  //     console.log(livesRemaining)
-  //     img.src = './assets/life.png'
-  //     livesRemainingDisplay.appendChild(img)
-  // }
-
-
-  // drawLives()
-
+  function initializeTrains(arr) {
+    for (let i = 0; i < arr.length; i++) {
+      cells[arr[i][0]][arr[i][1]].classList.add('train')
+      if (arr[i][1] % 2 === 0){
+        cells[arr[i][0]][arr[i][1]].style.backgroundImage = 'url(./assets/train_left.png)'
+        cells[arr[i][0]][arr[i][1]].style.backgroudPosition = 'left bottom'
+        
+      } else {
+        cells[arr[i][0]][arr[i][1]].style.backgroundImage = 'url(./assets/train_right.png)'
+        cells[arr[i][0]][arr[i][1]].style.backgroudPosition = 'right bottom'
+      }
+    }
+  }
+  initializeTrains(initTrain)
 
 
   // TODO: This needs refactoring. Probably move the UDLR arguments into the onkey function and make a single 'Move' Function.
@@ -153,7 +161,6 @@ function init() {
       case 37:
         moveLeft()
         detectCollision()
-
         break
       case 38:
         moveUp()
@@ -182,7 +189,7 @@ function init() {
       scoreCard.textContent = scoreTally
     }
   }
-  createCells() //TODO <==== Remove this and initiate on click of start button
+  
 
   //* Deals with obstical Movement
 
@@ -212,8 +219,10 @@ function init() {
     detectCollision()
   }
 
-  // calls the advance zombies in 1 second increments
-  // TODO: link speed multiplier to level dificulty
+
+
+  //calls the advance zombies in 1 second increments
+  //TODO: link speed multiplier to level dificulty
   setInterval(() => {
     advanceZombies(initZombie)
   }, 500)
@@ -232,28 +241,23 @@ function init() {
   function detectSafe() {
     console.log('ran detectSafe')
     if (x === 1 && y === 1) {
-      console.log(`home Safe in first Home`)
       homes[0].style.backgroundImage = 'url(./assets/safe_active.png)'
       goSprite('start')
     } else if (x === 4 && y === 1) {
-      console.log(`home Safe in second Home`)
       homes[1].style.backgroundImage = 'url(./assets/safe_active.png)'
       goSprite('start')
     } else if (x === 7 && y === 1) {
-      console.log(`home Safe in third Home`)
       homes[2].style.backgroundImage = 'url(./assets/safe_active.png)'
       goSprite('start')
     } else if (x === 10 && y === 1) {
-      console.log(`home Safe in fourth Home`)
       homes[3].style.backgroundImage = 'url(./assets/safe_active.png)'
       goSprite('start')
     } else if (x === 13 && y === 1) {
-      console.log(`home Safe in fifth Home`)
       homes[4].style.backgroundImage = 'url(./assets/safe_active.png)'
       goSprite('start')
     }
-
   }
+
 
 
 }
