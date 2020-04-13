@@ -27,8 +27,9 @@ function init() {
   // TODO: Get all zombies for level 1 set
   //Obstacle co-ordinates arrays
   const initZombie = [[12, 3], [12, 7], [12, 11], [12, 13], [12, 8], [11, 7], [10, 7]]
-  const initTrain = [[4, 5], [4, 4],[3, 8], [3, 9]]
-  
+  const initTrain = [[4, 4], [4, 5], [4, 6], [3, 4], [3, 5], [3, 6], [6, 1], [6, 2]]
+
+
 
 
   //Functions
@@ -76,22 +77,50 @@ function init() {
   createHomes()
   createCells() //TODO <==== Remove this and initiate on click of start button
   //Draws and advances trains depending on even/odd rows
-  
 
-  function initializeTrains(arr) {
+  //TODO Work Out why even number rows cant have back to back trains
+  //TODO ensure trains are getting correct images
+
+  function advanceTrains(arr) {
     for (let i = 0; i < arr.length; i++) {
-      cells[arr[i][0]][arr[i][1]].classList.add('train')
-      if (arr[i][1] % 2 === 0){
-        cells[arr[i][0]][arr[i][1]].style.backgroundImage = 'url(./assets/train_left.png)'
-        cells[arr[i][0]][arr[i][1]].style.backgroudPosition = 'left bottom'
+      cells[initTrain[i][0]][initTrain[i][1]].classList.remove('train')
+      cells[initTrain[i][0]][initTrain[i][1]].style.backgroundImage = ''
+      // console.log(i)
+
+      if (initTrain[i][0] % 2 === 0 && initTrain[i][1] === width - 1) {
+        initTrain[i][1] = 0
         
-      } else {
-        cells[arr[i][0]][arr[i][1]].style.backgroundImage = 'url(./assets/train_right.png)'
-        cells[arr[i][0]][arr[i][1]].style.backgroudPosition = 'right bottom'
+        // console.log(`even end: ${initTrain[i][1]}`)
       }
+
+      else if (initTrain[i][0] % 2 === 0) {
+        initTrain[i][1]++
+        if (y === initTrain[i][0] && x === initTrain[i][1]){
+          x++
+          console.log(`incresed x to ${x}`)
+        }
+        
+        // console.log(`even middle: ${initTrain[i][1]}`)
+      }
+
+      else if (initTrain[i][0] % 2 !== 0 && initTrain[i][1] === 0) {
+        initTrain[i][1] = width - 1
+        // console.log(`odd end: ${initTrain[i][1]}`)
+      }
+
+      else if (initTrain[i][0] % 2 !== 0) {
+        initTrain[i][1]--
+        // console.log(`odd middle: ${initTrain[i][1]}`)
+      }
+      cells[initTrain[i][0]][initTrain[i][1]].classList.add('train')
+      cells[initTrain[i][0]][initTrain[i][1]].style.backgroundImage = 'url(./assets/train_right.png)'
     }
   }
-  initializeTrains(initTrain)
+
+  setInterval(() => {
+    advanceTrains(initTrain)
+  }, 1000)
+
 
 
   // TODO: This needs refactoring. Probably move the UDLR arguments into the onkey function and make a single 'Move' Function.
@@ -189,7 +218,7 @@ function init() {
       scoreCard.textContent = scoreTally
     }
   }
-  
+
 
   //* Deals with obstical Movement
 
@@ -228,15 +257,30 @@ function init() {
   }, 500)
 
   function detectCollision() {
-    if (cells[y][x].classList.contains('zombie')) {
-      console.log(`x=${x} y=${y}`)
-      cells[y][x].classList.remove('sprite')
-      x = 7
-      y = height - 1
-      goSprite('start')
-      livesRemaining--
-      console.log(livesRemaining)
+    if (y > 7) {
+      if (cells[y][x].classList.contains('zombie')) {
+        console.log(`x=${x} y=${y}`)
+        cells[y][x].classList.remove('sprite')
+        x = 7
+        y = height - 1
+        goSprite('start')
+        livesRemaining--
+        console.log(livesRemaining)
+      }
+    } else if (y < 7 && y > 2){
+      if (!cells[y][x].classList.contains('train')){
+        console.log('SPLASH')
+        cells[y][x].style.backgroundImage = ''
+        cells[y][x].classList.remove('sprite')
+        x = 7
+        y = height - 1
+        goSprite('start')
+        livesRemaining--
+        console.log(livesRemaining)
+      }
+        
     }
+
   }
   function detectSafe() {
     console.log('ran detectSafe')
