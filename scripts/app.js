@@ -29,12 +29,44 @@ function init() {
   const initZombie = [[12, 3], [12, 7], [12, 11], [12, 13], [12, 8], [11, 7], [10, 7]]
   const initTrain = [[4, 4], [4, 5], [4, 6], [3, 4], [3, 5], [3, 6], [6, 1], [6, 2]]
 
+  const sprite = {
+    position: [x, y],
+    initialize: function (){
+      cells[y][x].classList.add('sprite')
+    },
+    up: function () {
+      if (y === 0) return
+      cells[y][x].classList.remove('sprite')
+      y--
+      cells[y][x].classList.add('sprite')
+    },
+    left: function () {
+      if (x === 0) return
+      cells[y][x].classList.remove('sprite')
+      x--
+      cells[y][x].classList.add('sprite')
+    },
+    right: function () {
+      if (x === width - 1) return
+      cells[y][x].classList.remove('sprite')
+      x++
+      cells[y][x].classList.add('sprite')
+    },
+    down: function () {
+      if (y === height - 1) return
+      cells[y][x].classList.remove('sprite')
+      y++
+      cells[y][x].classList.add('sprite')
+    }
+  }
 
 
 
   //Functions
   // Randomises zombie Sprite number (get different zombie sprites each reload)
   //TODO make random number correct multiplier depending on number of sprites also refactor this so Math.Random is only called once!
+
+
 
   function randomizeZombies() {
     for (let i = 0; i <= initZombie.length - 1; i++) {
@@ -63,7 +95,7 @@ function init() {
       cells.push(row)
     }
     console.log(cells)
-    goSprite('start')
+    // goSprite('start')
   }
   function createHomes() {
     for (let i = 0; i < 5; i++) {
@@ -76,12 +108,14 @@ function init() {
   }
   createHomes()
   createCells() //TODO <==== Remove this and initiate on click of start button
+  sprite.initialize()
   //Draws and advances trains depending on even/odd rows
 
   //TODO Work Out why even number rows cant have back to back trains
   //TODO ensure trains are getting correct images
 
   function advanceTrains(arr) {
+
     for (let i = 0; i < arr.length; i++) {
       cells[initTrain[i][0]][initTrain[i][1]].classList.remove('train')
       cells[initTrain[i][0]][initTrain[i][1]].style.backgroundImage = ''
@@ -89,28 +123,14 @@ function init() {
 
       if (initTrain[i][0] % 2 === 0 && initTrain[i][1] === width - 1) {
         initTrain[i][1] = 0
-        
-        // console.log(`even end: ${initTrain[i][1]}`)
-      }
-
-      else if (initTrain[i][0] % 2 === 0) {
+      } else if (initTrain[i][0] % 2 === 0) {
+        detectOnTrain()
         initTrain[i][1]++
-        if (y === initTrain[i][0] && x === initTrain[i][1]){
-          x++
-          console.log(`incresed x to ${x}`)
-        }
-        
-        // console.log(`even middle: ${initTrain[i][1]}`)
-      }
-
-      else if (initTrain[i][0] % 2 !== 0 && initTrain[i][1] === 0) {
+      } else if (initTrain[i][0] % 2 !== 0 && initTrain[i][1] === 0) {
         initTrain[i][1] = width - 1
-        // console.log(`odd end: ${initTrain[i][1]}`)
-      }
-
-      else if (initTrain[i][0] % 2 !== 0) {
+      } else if (initTrain[i][0] % 2 !== 0) {
+        detectOnTrain()
         initTrain[i][1]--
-        // console.log(`odd middle: ${initTrain[i][1]}`)
       }
       cells[initTrain[i][0]][initTrain[i][1]].classList.add('train')
       cells[initTrain[i][0]][initTrain[i][1]].style.backgroundImage = 'url(./assets/train_right.png)'
@@ -121,6 +141,21 @@ function init() {
     advanceTrains(initTrain)
   }, 1000)
 
+  function detectOnTrain() {
+    console.log(cells[y][x].classList.contains('train'))
+    if (!cells[y][x].classList.contains('train')) return
+
+    if (y % 2 === 0) {
+      cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_fwd.png)'
+      goSprite('R')
+    } else {
+      goSprite('L')
+    }
+  }
+
+
+
+
 
 
   // TODO: This needs refactoring. Probably move the UDLR arguments into the onkey function and make a single 'Move' Function.
@@ -129,47 +164,47 @@ function init() {
   // Adds and removes CSS Classes to the individual squares
   // TODO: make dog turn on key down instead of key up and add animation of legs
 
-  function goSprite(direction) {
-    // console.log(`sprite went ${direction}`)
-    if (direction === 'start') {
-      cells[y][x].style.backgroundImage = ''
-      cells[y][x].classList.remove('sprite')
-      y = 14
-      x = 7
-      cells[y][x].classList.add('sprite')
-    }
-    if (direction === 'U' && y !== 0) {
-      // console.log('move up')
-      cells[y][x].style.backgroundImage = ''
-      cells[y][x].classList.remove('sprite')
-      y--
-      cells[y][x].classList.add('sprite')
-      cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_fwd.png)'
-    } else if (direction === 'D' && y !== width - 1) {
-      // console.log('move down')
-      cells[y][x].style.backgroundImage = ''
-      cells[y][x].classList.remove('sprite')
-      y++
-      cells[y][x].classList.add('sprite')
-      cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_bwd.png)'
-    } else if (direction === 'L' && x !== 0) {
-      // console.log('move left')
-      cells[y][x].style.backgroundImage = ''
-      cells[y][x].classList.remove('sprite')
-      x--
-      cells[y][x].classList.add('sprite')
-      cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_left.png)'
-    } else if (direction === 'R' && x !== width - 1) {
-      // console.log('move right')
-      cells[y][x].style.backgroundImage = ''
-      cells[y][x].classList.remove('sprite')
-      x++
-      cells[y][x].classList.add('sprite')
-      cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_right.png)'
-    }
-  }
+  // function goSprite(direction) {
+  //   // console.log(`sprite went ${direction}`)
+  //   if (direction === 'start') {
+  //     cells[y][x].style.backgroundImage = ''
+  //     cells[y][x].classList.remove('sprite')
+  //     y = 14
+  //     x = 7
+  //     cells[y][x].classList.add('sprite')
+  //   }
+  //   if (direction === 'U' && y !== 0) {
+  //     // console.log('move up')
+  //     cells[y][x].style.backgroundImage = ''
+  //     cells[y][x].classList.remove('sprite')
+  //     y--
+  //     cells[y][x].classList.add('sprite')
+  //     cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_fwd.png)'
+  //   } else if (direction === 'D' && y !== width - 1) {
+  //     // console.log('move down')
+  //     cells[y][x].style.backgroundImage = ''
+  //     cells[y][x].classList.remove('sprite')
+  //     y++
+  //     cells[y][x].classList.add('sprite')
+  //     cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_bwd.png)'
+  //   } else if (direction === 'L' && x !== 0) {
+  //     // console.log('move left')
+  //     cells[y][x].style.backgroundImage = ''
+  //     cells[y][x].classList.remove('sprite')
+  //     x--
+  //     cells[y][x].classList.add('sprite')
+  //     cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_left.png)'
+  //   } else if (direction === 'R' && x !== width - 1) {
+  //     // console.log('move right')
+  //     cells[y][x].style.backgroundImage = ''
+  //     cells[y][x].classList.remove('sprite')
+  //     x++
+  //     cells[y][x].classList.add('sprite')
+  //     cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_right.png)'
+  //   }
+  // }
   //Function chains to go on Key Presses
-  function moveUp() {
+  function AmoveUp() {
     goSprite('U')
     scoreIncrease()
   }
@@ -188,20 +223,24 @@ function init() {
   window.onkeyup = function (event) {
     switch (event.keyCode) {
       case 37:
-        moveLeft()
+        sprite.left()
+        // moveLeft()
         detectCollision()
         break
       case 38:
-        moveUp()
+        sprite.up()
+        // moveUp()
         detectCollision()
         detectSafe()
         break
       case 39:
-        moveRight()
+        sprite.right()
+        // moveRight()
         detectCollision()
         break
       case 40:
-        moveDown()
+        sprite.down()
+        // moveDown()
         detectCollision()
         break
     }
@@ -267,8 +306,8 @@ function init() {
         livesRemaining--
         console.log(livesRemaining)
       }
-    } else if (y < 7 && y > 2){
-      if (!cells[y][x].classList.contains('train')){
+    } else if (y < 7 && y > 2) {
+      if (!cells[y][x].classList.contains('train')) {
         console.log('SPLASH')
         cells[y][x].style.backgroundImage = ''
         cells[y][x].classList.remove('sprite')
@@ -278,7 +317,7 @@ function init() {
         livesRemaining--
         console.log(livesRemaining)
       }
-        
+
     }
 
   }

@@ -24,7 +24,8 @@
 }
 
 .grid div.sprite{
-  background-image: url(../assets/pupper_spr_fwd.png);
+  /* background-image: url(../assets/pupper_spr_fwd.png); */
+  background-color: blue;
   background-repeat: no-repeat;
   background-size: contain;
 }
@@ -58,9 +59,3 @@
   background-size: contain;
   background-position: center;
 }
-/* .grid div.train-right{
-  background-image: url(../assets/train_right.png);
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-} */
