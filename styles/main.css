@@ -24,8 +24,8 @@
 }
 
 .grid div.sprite{
-  /* background-image: url(../assets/pupper_spr_fwd.png); */
-  background-color: blue;
+  background-image: url(../assets/pupper_spr_fwd.png);
+  /* background-color: blue; */
   background-repeat: no-repeat;
   background-size: contain;
 }
@@ -47,14 +47,20 @@
 .homes div{
   width:150px;
   height: 100px;
-  color: blue;
+  color: rgba(0, 0, 255, 0.5);
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
 }
 
 .grid div.train{
-  /* background-image: url(../assets/train_left.png); */
+  background-color: yellow ;
+  border: 1px solid lightslategray;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+.grid div.test{
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;

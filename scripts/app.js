@@ -15,6 +15,10 @@ function init() {
 
   //Points Increment Variables
   const jumpPoints = 10
+  const homePoints = 50
+
+  //Speed Multipliers
+  let speedMultiplier = 1
 
   //Character Sprite Variables
   let x = 7
@@ -26,37 +30,54 @@ function init() {
   // TODO: find a better way of generating Zombie Initializer Lists. Harder Levels should have more!!!
   // TODO: Get all zombies for level 1 set
   //Obstacle co-ordinates arrays
+  const safeCells = [1, 4, 7, 10, 13]
   const initZombie = [[12, 3], [12, 7], [12, 11], [12, 13], [12, 8], [11, 7], [10, 7]]
-  const initTrain = [[4, 4], [4, 5], [4, 6], [3, 4], [3, 5], [3, 6], [6, 1], [6, 2]]
-
+  const initTrain = [[6, 3], [6, 2], [6, 1], [6, 10], [6, 9], [6, 8], [4, 3], [4, 2], [4, 1], [4, 10], [4, 9], [4, 8], [2, 3], [2, 2], [2, 1], [2, 10], [2, 9], [2, 8], [5, 5], [5, 6], [5, 7], [5, 8], [5, 12], [5, 13], [5, 14], [5, 0], [3, 5], [3, 6], [3, 7], [3, 8], [3, 12], [3, 13], [3, 14], [3, 0]]
   const sprite = {
     position: [x, y],
-    initialize: function (){
-      cells[y][x].classList.add('sprite')
+    initialize: function () {
+      if (livesRemaining > 0) {
+        x = 7
+        y = 14
+        cells[y][x].classList.remove('sprite')
+        cells[y][x].classList.add('sprite')
+      } else {
+        endGame()
+      }
+
     },
     up: function () {
       if (y === 0) return
+      cells[y][x].style.backgroundImage = ''
       cells[y][x].classList.remove('sprite')
       y--
       cells[y][x].classList.add('sprite')
+      cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_fwd.png)'
+      scoreStepIncrease()
     },
     left: function () {
       if (x === 0) return
+      cells[y][x].style.backgroundImage = ''
       cells[y][x].classList.remove('sprite')
       x--
       cells[y][x].classList.add('sprite')
+      cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_left.png)'
     },
     right: function () {
       if (x === width - 1) return
+      cells[y][x].style.backgroundImage = ''
       cells[y][x].classList.remove('sprite')
       x++
       cells[y][x].classList.add('sprite')
+      cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_right.png)'
     },
     down: function () {
       if (y === height - 1) return
+      cells[y][x].style.backgroundImage = ''
       cells[y][x].classList.remove('sprite')
       y++
       cells[y][x].classList.add('sprite')
+      cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_bwd.png)'
     }
   }
 
@@ -65,18 +86,6 @@ function init() {
   //Functions
   // Randomises zombie Sprite number (get different zombie sprites each reload)
   //TODO make random number correct multiplier depending on number of sprites also refactor this so Math.Random is only called once!
-
-
-
-  function randomizeZombies() {
-    for (let i = 0; i <= initZombie.length - 1; i++) {
-      const sprite = Math.ceil(Math.random() * 4)
-      initZombie[i].push(sprite)
-      console.log(initZombie[i])
-    }
-  }
-
-  randomizeZombies() // TODO Make this happen at a more appropriate time
 
 
   //Adding Event Listeners
@@ -95,7 +104,6 @@ function init() {
       cells.push(row)
     }
     console.log(cells)
-    // goSprite('start')
   }
   function createHomes() {
     for (let i = 0; i < 5; i++) {
@@ -114,110 +122,57 @@ function init() {
   //TODO Work Out why even number rows cant have back to back trains
   //TODO ensure trains are getting correct images
 
-  function advanceTrains(arr) {
+  function advanceEvenRowTrains(arr) {
+    for (let i = 0; i < arr.length; i++) {
+      cells[initTrain[i][0]][initTrain[i][1]].classList.remove('train')
+      if (initTrain[i][0] % 2 === 0 && initTrain[i][1] === width - 1) {
+        detectOnTrain(i)
+        initTrain[i][1] = 0
+      } else if (initTrain[i][0] % 2 === 0) {
+        detectOnTrain(i)
+        initTrain[i][1]++
+      }
+      cells[initTrain[i][0]][initTrain[i][1]].classList.add('train')
+
+
+
+    }
+  }
+
+  function advanceOddRowTrains(arr) {
 
     for (let i = 0; i < arr.length; i++) {
       cells[initTrain[i][0]][initTrain[i][1]].classList.remove('train')
-      cells[initTrain[i][0]][initTrain[i][1]].style.backgroundImage = ''
-      // console.log(i)
-
-      if (initTrain[i][0] % 2 === 0 && initTrain[i][1] === width - 1) {
-        initTrain[i][1] = 0
-      } else if (initTrain[i][0] % 2 === 0) {
-        detectOnTrain()
-        initTrain[i][1]++
-      } else if (initTrain[i][0] % 2 !== 0 && initTrain[i][1] === 0) {
+      if (initTrain[i][0] % 2 !== 0 && initTrain[i][1] === 0) {
+        detectOnTrain(i)
         initTrain[i][1] = width - 1
       } else if (initTrain[i][0] % 2 !== 0) {
-        detectOnTrain()
+        detectOnTrain(i)
         initTrain[i][1]--
       }
       cells[initTrain[i][0]][initTrain[i][1]].classList.add('train')
-      cells[initTrain[i][0]][initTrain[i][1]].style.backgroundImage = 'url(./assets/train_right.png)'
     }
   }
 
   setInterval(() => {
-    advanceTrains(initTrain)
-  }, 1000)
+    advanceEvenRowTrains(initTrain)
+  }, 1000 * speedMultiplier)
 
-  function detectOnTrain() {
-    console.log(cells[y][x].classList.contains('train'))
-    if (!cells[y][x].classList.contains('train')) return
+  setInterval(() => {
+    advanceOddRowTrains(initTrain)
+  }, 750 * speedMultiplier)
 
-    if (y % 2 === 0) {
-      cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_fwd.png)'
-      goSprite('R')
-    } else {
-      goSprite('L')
+  function detectOnTrain(i) {
+    if (y === initTrain[i][0] && x === initTrain[i][1]) {
+
+      console.log('on train')
+      if (y % 2 === 0) {
+        sprite.right()
+      } else {
+        sprite.left()
+      }
     }
   }
-
-
-
-
-
-
-  // TODO: This needs refactoring. Probably move the UDLR arguments into the onkey function and make a single 'Move' Function.
-  // TODO: goSprite Function needs re-factoring to be more efficient
-  //* This Section deals with the movement of the sprite and human input from the keyboard
-  // Adds and removes CSS Classes to the individual squares
-  // TODO: make dog turn on key down instead of key up and add animation of legs
-
-  // function goSprite(direction) {
-  //   // console.log(`sprite went ${direction}`)
-  //   if (direction === 'start') {
-  //     cells[y][x].style.backgroundImage = ''
-  //     cells[y][x].classList.remove('sprite')
-  //     y = 14
-  //     x = 7
-  //     cells[y][x].classList.add('sprite')
-  //   }
-  //   if (direction === 'U' && y !== 0) {
-  //     // console.log('move up')
-  //     cells[y][x].style.backgroundImage = ''
-  //     cells[y][x].classList.remove('sprite')
-  //     y--
-  //     cells[y][x].classList.add('sprite')
-  //     cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_fwd.png)'
-  //   } else if (direction === 'D' && y !== width - 1) {
-  //     // console.log('move down')
-  //     cells[y][x].style.backgroundImage = ''
-  //     cells[y][x].classList.remove('sprite')
-  //     y++
-  //     cells[y][x].classList.add('sprite')
-  //     cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_bwd.png)'
-  //   } else if (direction === 'L' && x !== 0) {
-  //     // console.log('move left')
-  //     cells[y][x].style.backgroundImage = ''
-  //     cells[y][x].classList.remove('sprite')
-  //     x--
-  //     cells[y][x].classList.add('sprite')
-  //     cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_left.png)'
-  //   } else if (direction === 'R' && x !== width - 1) {
-  //     // console.log('move right')
-  //     cells[y][x].style.backgroundImage = ''
-  //     cells[y][x].classList.remove('sprite')
-  //     x++
-  //     cells[y][x].classList.add('sprite')
-  //     cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_right.png)'
-  //   }
-  // }
-  //Function chains to go on Key Presses
-  function AmoveUp() {
-    goSprite('U')
-    scoreIncrease()
-  }
-  function moveDown() {
-    goSprite('D')
-  }
-  function moveLeft() {
-    goSprite('L')
-  }
-  function moveRight() {
-    goSprite('R')
-  }
-
 
   // gets player 1's key presses from Arrow key Dpad
   window.onkeyup = function (event) {
@@ -232,6 +187,7 @@ function init() {
         // moveUp()
         detectCollision()
         detectSafe()
+        detectOnTrain()
         break
       case 39:
         sprite.right()
@@ -246,16 +202,28 @@ function init() {
     }
   }
 
+  function randomizeZombies() {
+    for (let i = 0; i <= initZombie.length - 1; i++) {
+      const sprite = Math.ceil(Math.random() * 4)
+      initZombie[i].push(sprite)
+    }
+  }
+
+  randomizeZombies() // TODO Make this happen at a more appropriate time
 
   // Increments the furthest jump variable only if the sprite is advancing further than it has previously
   // Also increments score variable by Jump Points and pushes score to score span in HTML
   // ? Was a challenge to work out as I wanted to keep true to the original scoring system 
-  function scoreIncrease() {
+  function scoreStepIncrease() {
     if (height - y - 1 > furthestJump) {
       furthestJump++
-      scoreTally += jumpPoints
-      scoreCard.textContent = scoreTally
+      displayScore(jumpPoints)
     }
+  }
+
+  function displayScore(increment) {
+    scoreTally += increment
+    scoreCard.textContent = scoreTally
   }
 
 
@@ -295,6 +263,7 @@ function init() {
     advanceZombies(initZombie)
   }, 500)
 
+  //detects whether the sprite has colided with a cell containing class zombie or a cell on tracks that doesn't contain class train
   function detectCollision() {
     if (y > 7) {
       if (cells[y][x].classList.contains('zombie')) {
@@ -302,46 +271,53 @@ function init() {
         cells[y][x].classList.remove('sprite')
         x = 7
         y = height - 1
-        goSprite('start')
+        sprite.initialize()
         livesRemaining--
         console.log(livesRemaining)
       }
-    } else if (y < 7 && y > 2) {
+    } else if (y < 7 && y > 1) {
       if (!cells[y][x].classList.contains('train')) {
         console.log('SPLASH')
         cells[y][x].style.backgroundImage = ''
         cells[y][x].classList.remove('sprite')
-        x = 7
-        y = height - 1
-        goSprite('start')
+        sprite.initialize()
         livesRemaining--
         console.log(livesRemaining)
       }
 
     }
+
+
 
   }
   function detectSafe() {
     console.log('ran detectSafe')
     if (x === 1 && y === 1) {
       homes[0].style.backgroundImage = 'url(./assets/safe_active.png)'
-      goSprite('start')
+      sprite.initialize()
+      displayScore(homePoints)
+      furthestJump = 0
     } else if (x === 4 && y === 1) {
       homes[1].style.backgroundImage = 'url(./assets/safe_active.png)'
-      goSprite('start')
+      sprite.initialize()
+      displayScore(homePoints)
+      furthestJump = 0
     } else if (x === 7 && y === 1) {
       homes[2].style.backgroundImage = 'url(./assets/safe_active.png)'
-      goSprite('start')
+      sprite.initialize()
+      displayScore(homePoints)
+      furthestJump = 0
     } else if (x === 10 && y === 1) {
       homes[3].style.backgroundImage = 'url(./assets/safe_active.png)'
-      goSprite('start')
+      sprite.initialize()
+      displayScore(homePoints)
+      furthestJump = 0
     } else if (x === 13 && y === 1) {
       homes[4].style.backgroundImage = 'url(./assets/safe_active.png)'
-      goSprite('start')
+      sprite.initialize()
+      displayScore(homePoints)
+      furthestJump = 0
     }
   }
-
-
-
 }
 window.addEventListener('DOMContentLoaded', init)
