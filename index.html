@@ -1,31 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pupper</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="styles/main.css">
   <script src="scripts/app.js"></script>
 </head>
+
 <body>
-  <div class="score">
-    <p>Score: <span id="score">0</span></p>
+  <div class="info-box">
+    <div class="user-numbers">
+      <p>Score: <span id="score">0</span></p>
+    </div>
+    <div class="user-numbers">
+      <p>Lives Remaining: <span id="lives">5</span></p>
+    </div>
   </div>
-  <div>
-    <button id="start-button">Start</button>
-  </div>
+
+
 
 
   <div class="grid-wrapper">
+    <div class="start-box">
+      <h1>PUPPER</h1>
+      <h2>The greatest zombie and dog obstacle game on the internet*</h2>
+      <div>
+        <button class="start-button" id="start-button">Start</button>
+      </div>
+      <h3>* Probably, honestly I've not checked</h3>
+    </div>
+    <div class="restart">
+      <h1>YOU DIED</h1>
+      <button class="restart-button" id="restart-button">Re-start Game</button>
+    </div>
     <div class="homes">
-      
+
     </div>
     <div class="grid">
 
     </div>
   </div>
-  <div class="lives" id="remaining-lives">
 
-  </div>
 </body>
+
 </html>

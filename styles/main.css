@@ -1,3 +1,39 @@
+@font-face{
+  font-family: 'zoombieland';
+  src: url(../styles/fonts/zoombieland-webfont.woff2) format('woff2'),
+  url(../styles/fonts/zoombieland-webfont.woff) format('woff');
+}
+.start-box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  background-image: url(../assets/start-background.png);
+  width: 780px;
+  height: 780px;
+  background-color: rgba(0, 0, 255, 1);
+  z-index: 1;
+}
+.start-box h1{
+  font-family: 'zoombieland', serif;
+  font-size: 150px;
+  color: black;
+  text-shadow: 8px 0 10px #ffffff;
+  font-weight: bolder;
+  letter-spacing: 15px;
+  margin: 0;
+}
+.start-box h2, h3{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+  color: black;
+  text-shadow: 8px 0 10px #ffffff;
+}
+.start-box h3{
+  font-size: 20px;
+}
+
 .grid-wrapper {
   height: 90vh;
   display: flex;
@@ -6,6 +42,8 @@
 
 
 .grid {
+  background-image: url(../assets/grid-background.jpeg);
+  background-size: cover;
   align-items: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
   display: flex;
@@ -39,6 +77,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  align-items: baseline;
   position: absolute;
   z-index: 1;
   height: 100px;
@@ -47,21 +86,70 @@
 .homes div{
   width:150px;
   height: 100px;
-  color: rgba(0, 0, 255, 0.5);
+  margin-top: 5px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+}
+.grid div.train{
+  background: linear-gradient(180deg, rgba(40,40,40,1) 0%, rgba(107,107,107,1) 50%, rgba(66,66,66,1) 100%);
+  background-color: rgba(40,40,40,1);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  
+  }
+.grid-wrapper .restart{
+  display: none;
+  background-image: url(../assets/you-died-background.png);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  font-family: 'zoombieland', sans-serif;
+  color: black;
+  text-shadow: 8px 0 10px #ffffff;
+  position: absolute;
+  z-index: 1;
+  margin: 200px 0;
+  height: 400px;
+  width: 780px;
+}
+.restart h1{
+  font-size: 150px;
+  margin: 0;
+}
+.start-button, .restart-button{
+  height: 50px;
+  width: 300px;
+  background-color: gray;
+  color: black;
+  border: 3px solid black;
+  border-radius: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: bold; 
+}
+.info-box{
+  display: none;
+  justify-content: center;
+  justify-items: center;
+  align-content: space-between;
+  background-image: url(../assets/score-background.jpg);
+  background-size: contain;
+  width: 780px;
+  position: relative;
+  margin: auto;
+  font-family: 'zoombieland';
+  font-size: 40px;
 }
 
-.grid div.train{
-  background-color: yellow ;
-  border: 1px solid lightslategray;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+.user-numbers{
+  padding: 0 50px;
+  margin: 0;
 }
-.grid div.test{
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+.user-numbers p{
+  color: grey;
+  margin: 0;
 }

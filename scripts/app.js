@@ -3,6 +3,12 @@ function init() {
   const grid = document.querySelector('.grid')
   const homeGrid = document.querySelector('.homes')
   const scoreCard = document.querySelector('#score')
+  const startButton = document.querySelector('#start-button')
+  const startBox = document.querySelector('.start-box')
+  const restart = document.querySelector('.restart')
+  const restartButton = document.querySelector('#restart-button')
+  const lifeSection = document.querySelector('#lives')
+  const infoBox = document.querySelector('.info-box')
   const startlives = 5
   const cells = []
   const homes = []
@@ -18,7 +24,7 @@ function init() {
   const homePoints = 50
 
   //Speed Multipliers
-  let speedMultiplier = 1
+  
 
   //Character Sprite Variables
   let x = 7
@@ -30,19 +36,19 @@ function init() {
   // TODO: find a better way of generating Zombie Initializer Lists. Harder Levels should have more!!!
   // TODO: Get all zombies for level 1 set
   //Obstacle co-ordinates arrays
-  const safeCells = [1, 4, 7, 10, 13]
   const initZombie = [[12, 3], [12, 7], [12, 11], [12, 13], [12, 8], [11, 7], [10, 7]]
   const initTrain = [[6, 3], [6, 2], [6, 1], [6, 10], [6, 9], [6, 8], [4, 3], [4, 2], [4, 1], [4, 10], [4, 9], [4, 8], [2, 3], [2, 2], [2, 1], [2, 10], [2, 9], [2, 8], [5, 5], [5, 6], [5, 7], [5, 8], [5, 12], [5, 13], [5, 14], [5, 0], [3, 5], [3, 6], [3, 7], [3, 8], [3, 12], [3, 13], [3, 14], [3, 0]]
   const sprite = {
     position: [x, y],
     initialize: function () {
-      if (livesRemaining > 0) {
+      console.log(livesRemaining)
+      if (livesRemaining > 1) {
         x = 7
         y = 14
         cells[y][x].classList.remove('sprite')
         cells[y][x].classList.add('sprite')
       } else {
-        endGame()
+        loseGame()
       }
 
     },
@@ -80,9 +86,74 @@ function init() {
       cells[y][x].style.backgroundImage = 'url(./assets/pupper_spr_bwd.png)'
     }
   }
+  let oddTrains = 0
+  let evenTrains = 0
+  let zombiesGo = 0
+
+  function start() {
+    createHomes()
+    createCells()
+    randomizeZombies()
+    sprite.initialize()
+    evenTrains = setInterval(() => {
+      advanceEvenRowTrains(initTrain)
+    }, 1000)
+
+    oddTrains = setInterval(() => {
+      advanceOddRowTrains(initTrain)
+    }, 500)
+    
+    
 
 
+    //calls the advance zombies in 1 second increments
+    //TODO: link speed multiplier to level dificulty
+    zombiesGo = setInterval(() => {
+      advanceZombies(initZombie)
+    }, 500)
 
+    startBox.style.display = 'none'
+    infoBox.style.display = 'flex'
+  }
+
+  function loseGame(){
+    clearInterval(evenTrains)
+    clearInterval(oddTrains)
+    clearInterval(zombiesGo)
+    randomizeZombies()
+    restart.style.display = 'flex'
+  }
+
+  function restartGame(){
+    livesRemaining = 5
+    sprite.initialize()
+    
+    restart.style.display = 'none'
+    evenTrains = setInterval(() => {
+      advanceEvenRowTrains(initTrain)
+    }, 1000)
+
+    oddTrains = setInterval(() => {
+      advanceOddRowTrains(initTrain)
+    }, 750)
+    
+    startBox.style.display = 'none'
+
+    zombiesGo = setInterval(() => {
+      advanceZombies(initZombie)
+    }, 500)
+    resetHomes()
+  }
+
+  function resetHomes(){
+    
+    for (let i = 0; i < 5; i++){
+      console.log('reset homes')
+      homes[i].pop()
+    }
+    console.log(homes)
+    createHomes()
+  }
   //Functions
   // Randomises zombie Sprite number (get different zombie sprites each reload)
   //TODO make random number correct multiplier depending on number of sprites also refactor this so Math.Random is only called once!
@@ -98,7 +169,7 @@ function init() {
       for (let j = 0; j < width; j++) {
         const cell = document.createElement('div')
         grid.appendChild(cell)
-        cell.textContent = `${i}-${j}`
+        // cell.textContent = `${i}-${j}`
         row.push(cell)
       }
       cells.push(row)
@@ -109,14 +180,17 @@ function init() {
     for (let i = 0; i < 5; i++) {
       const home = document.createElement('div')
       homeGrid.appendChild(home)
-      home.textContent = `home ${i}`
+      // home.textContent = `home ${i}`
       homes.push(home)
       home.style.backgroundImage = 'url(./assets/safe.png)'
     }
   }
-  createHomes()
-  createCells() //TODO <==== Remove this and initiate on click of start button
-  sprite.initialize()
+
+  function pushLives(){
+    console.log('ran pushlives')
+    lifeSection.textContent = livesRemaining
+  }
+
   //Draws and advances trains depending on even/odd rows
 
   //TODO Work Out why even number rows cant have back to back trains
@@ -154,14 +228,6 @@ function init() {
     }
   }
 
-  setInterval(() => {
-    advanceEvenRowTrains(initTrain)
-  }, 1000 * speedMultiplier)
-
-  setInterval(() => {
-    advanceOddRowTrains(initTrain)
-  }, 750 * speedMultiplier)
-
   function detectOnTrain(i) {
     if (y === initTrain[i][0] && x === initTrain[i][1]) {
 
@@ -179,37 +245,37 @@ function init() {
     switch (event.keyCode) {
       case 37:
         sprite.left()
-        // moveLeft()
         detectCollision()
         break
       case 38:
         sprite.up()
-        // moveUp()
-        detectCollision()
         detectSafe()
-        detectOnTrain()
+        detectCollision()
         break
       case 39:
         sprite.right()
-        // moveRight()
         detectCollision()
         break
       case 40:
         sprite.down()
-        // moveDown()
         detectCollision()
         break
     }
   }
 
   function randomizeZombies() {
+    if (initZombie[0].length === 3){
+      for (let i = 0; i <= initZombie.length - 1; i++){
+        initZombie[i][2] = Math.ceil(Math.random() * 16)
+      }
+    }
     for (let i = 0; i <= initZombie.length - 1; i++) {
-      const sprite = Math.ceil(Math.random() * 4)
+      const sprite = Math.ceil(Math.random() * 16)
       initZombie[i].push(sprite)
     }
   }
 
-  randomizeZombies() // TODO Make this happen at a more appropriate time
+
 
   // Increments the furthest jump variable only if the sprite is advancing further than it has previously
   // Also increments score variable by Jump Points and pushes score to score span in HTML
@@ -257,11 +323,7 @@ function init() {
 
 
 
-  //calls the advance zombies in 1 second increments
-  //TODO: link speed multiplier to level dificulty
-  setInterval(() => {
-    advanceZombies(initZombie)
-  }, 500)
+
 
   //detects whether the sprite has colided with a cell containing class zombie or a cell on tracks that doesn't contain class train
   function detectCollision() {
@@ -274,8 +336,9 @@ function init() {
         sprite.initialize()
         livesRemaining--
         console.log(livesRemaining)
+        pushLives()
       }
-    } else if (y < 7 && y > 1) {
+    } else if (y < 7 && y > 0) {
       if (!cells[y][x].classList.contains('train')) {
         console.log('SPLASH')
         cells[y][x].style.backgroundImage = ''
@@ -283,6 +346,7 @@ function init() {
         sprite.initialize()
         livesRemaining--
         console.log(livesRemaining)
+        pushLives()
       }
 
     }
@@ -319,5 +383,7 @@ function init() {
       furthestJump = 0
     }
   }
+  restartButton.addEventListener('click', restartGame)
+  startButton.addEventListener('click', start)
 }
 window.addEventListener('DOMContentLoaded', init)
