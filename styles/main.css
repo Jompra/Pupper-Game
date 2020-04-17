@@ -161,3 +161,35 @@
   color: grey;
   margin: 0;
 }
+
+.won{
+  display: none;
+  background-image: url(../assets/won-background.jpg);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  font-family: 'zoombieland', sans-serif;
+  color: black;
+  text-shadow: 8px 0 10px #ffffff;
+  position: absolute;
+  z-index: 1;
+  margin: 200px 0;
+  height: 400px;
+  width: 780px;
+}
+.won h1{
+  font-size: 150px;
+  margin: 0;
+}
+.won .restart-button2{
+  height: 50px;
+  width: 300px;
+  background-color: gray;
+  color: black;
+  border: 3px solid black;
+  border-radius: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: bold; 
+}

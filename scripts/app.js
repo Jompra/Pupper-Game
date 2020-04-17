@@ -6,13 +6,16 @@ function init() {
   const startButton = document.querySelector('#start-button')
   const startBox = document.querySelector('.start-box')
   const restart = document.querySelector('.restart')
-  const restartButton = document.querySelector('#restart-button')
+  const restartButton = document.querySelector('.restart-button')
   const lifeSection = document.querySelector('#lives')
   const infoBox = document.querySelector('.info-box')
+  const wonBox = document.querySelector('.won')
+  const restartButton2 = document.querySelector('.restart-button2')
   const startlives = 5
   const cells = []
   const homes = []
   let livesRemaining = startlives
+  let homesOccupied = 0
 
   //Grid Variables
   const height = 15
@@ -47,6 +50,7 @@ function init() {
         y = 14
         cells[y][x].classList.remove('sprite')
         cells[y][x].classList.add('sprite')
+        checkWon()
       } else {
         loseGame()
       }
@@ -123,6 +127,14 @@ function init() {
     randomizeZombies()
     restart.style.display = 'flex'
   }
+  function checkWon(){
+    if (homesOccupied < 5) return
+    clearInterval(evenTrains)
+    clearInterval(oddTrains)
+    clearInterval(zombiesGo)
+    randomizeZombies()
+    wonBox.style.display = 'flex'
+  }
 
   function restartGame(){
     livesRemaining = 5
@@ -137,21 +149,20 @@ function init() {
       advanceOddRowTrains(initTrain)
     }, 750)
     
-    startBox.style.display = 'none'
-
     zombiesGo = setInterval(() => {
       advanceZombies(initZombie)
     }, 500)
     pushLives()
-    resetHomes()
-    
+    // resetHomes()
+    startBox.style.display = 'none'
+    wonBox.style.display = 'none'
   }
 
   function resetHomes(){
     
     for (let i = 0; i < 5; i++){
       console.log('reset homes')
-      homes[i].pop()
+      homes[i].remove()
     }
     console.log(homes)
     createHomes()
@@ -359,32 +370,43 @@ function init() {
   function detectSafe() {
     console.log('ran detectSafe')
     if (x === 1 && y === 1) {
+      homesOccupied++
       homes[0].style.backgroundImage = 'url(./assets/safe_active.png)'
       sprite.initialize()
       displayScore(homePoints)
+      
       furthestJump = 0
     } else if (x === 4 && y === 1) {
+      homesOccupied++
       homes[1].style.backgroundImage = 'url(./assets/safe_active.png)'
       sprite.initialize()
       displayScore(homePoints)
+      
       furthestJump = 0
     } else if (x === 7 && y === 1) {
+      homesOccupied++
       homes[2].style.backgroundImage = 'url(./assets/safe_active.png)'
       sprite.initialize()
       displayScore(homePoints)
+      
       furthestJump = 0
     } else if (x === 10 && y === 1) {
+      homesOccupied++
       homes[3].style.backgroundImage = 'url(./assets/safe_active.png)'
       sprite.initialize()
       displayScore(homePoints)
+      
       furthestJump = 0
     } else if (x === 13 && y === 1) {
+      homesOccupied++
       homes[4].style.backgroundImage = 'url(./assets/safe_active.png)'
       sprite.initialize()
       displayScore(homePoints)
+      
       furthestJump = 0
     }
   }
+  restartButton2.addEventListener('click', restartGame)
   restartButton.addEventListener('click', restartGame)
   startButton.addEventListener('click', start)
 }
