@@ -36,7 +36,7 @@ function init() {
   // TODO: find a better way of generating Zombie Initializer Lists. Harder Levels should have more!!!
   // TODO: Get all zombies for level 1 set
   //Obstacle co-ordinates arrays
-  const initZombie = [[12, 3], [12, 7], [12, 11], [12, 13], [12, 8], [11, 7], [10, 7]]
+  const initZombie = [[12, 3], [12, 7], [12, 11], [12, 13], [12, 8], [11, 7], [10, 6], [13, 3], [13, 7], [13, 11], [9, 3], [9, 7], [9, 11], [9, 13], [9, 8]]
   const initTrain = [[6, 3], [6, 2], [6, 1], [6, 10], [6, 9], [6, 8], [4, 3], [4, 2], [4, 1], [4, 10], [4, 9], [4, 8], [2, 3], [2, 2], [2, 1], [2, 10], [2, 9], [2, 8], [5, 5], [5, 6], [5, 7], [5, 8], [5, 12], [5, 13], [5, 14], [5, 0], [3, 5], [3, 6], [3, 7], [3, 8], [3, 12], [3, 13], [3, 14], [3, 0]]
   const sprite = {
     position: [x, y],
@@ -142,7 +142,9 @@ function init() {
     zombiesGo = setInterval(() => {
       advanceZombies(initZombie)
     }, 500)
+    pushLives()
     resetHomes()
+    
   }
 
   function resetHomes(){
