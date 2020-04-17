@@ -321,7 +321,7 @@ function init() {
       }
 
       cells[initZombie[i][0]][initZombie[i][1]].classList.add('zombie')
-      cells[initZombie[i][0]][initZombie[i][1]].style.backgroundImage = `url(../assets/zombies/${direction}_${initZombie[i][2]}.png)`
+      cells[initZombie[i][0]][initZombie[i][1]].style.backgroundImage = `url(../assets/${direction}_${initZombie[i][2]}.png)`
     }
     detectCollision()
   }
