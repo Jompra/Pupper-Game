@@ -158,15 +158,7 @@ function init() {
     wonBox.style.display = 'none'
   }
 
-  function resetHomes(){
-    
-    for (let i = 0; i < 5; i++){
-      console.log('reset homes')
-      homes[i].remove()
-    }
-    console.log(homes)
-    createHomes()
-  }
+
   //Functions
   // Randomises zombie Sprite number (get different zombie sprites each reload)
   //TODO make random number correct multiplier depending on number of sprites also refactor this so Math.Random is only called once!
