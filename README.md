@@ -16,7 +16,7 @@ I was tasked to build a grid based game for module 1 'Front End Development' at 
   * [Sprite Movement](##Sprite-Movement)
   * [Zombies](##Zombie-Generation-and-Movement)
   * [Trains](##Train-Generation-and-Movement)
-  * [Detecting Colissions](##Detecting-Colissions)
+  * [Detecting Colissions](#Detecting-Colissions)
   * [Losing the game](##Loss-Logic)
   * [Getting Home](##Getting-Home)
   * [Scoring and losing lives](##Score-and-lives)
