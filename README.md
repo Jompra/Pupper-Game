@@ -1,5 +1,6 @@
+
+# Project 1: 'Pupper'
 ![ga_cog_large_red_rgb](https://cloud.githubusercontent.com/assets/40461/8183776/469f976e-1432-11e5-8199-6ac91363302b.png)
-# 'Pupper'
 
 ## Introduction
 
@@ -58,7 +59,7 @@ Using the 2D array did mean that my code became somewhat more difficult to read 
 
 ## Sprite Movement
 
-This is acheived simply by taking the user's keystroke (↑, ↓, →, ←) removing the .sprite class and background image from the sprite's current position, updating the x or y values and then re-drawing the background image at the new values. A different background is drawn depending on which direction the user has chosen.
+This is acheived simply by taking the user's keystroke ( <kbd>↑</kbd> <kbd>↓</kbd> <kbd>→</kbd> <kbd>←</kbd> ) removing the .sprite class and background image from the sprite's current position, updating the x or y values and then re-drawing the background image at the new values. A different background is drawn depending on which direction the user has chosen.
 
 ## Zombie Generation and Movement
 I wanted an easy way of adding and removing the zombie elements so that I could test the gameplay and easily change position and quantity. The easiest way to do this was with another 2D array containing each zombie's start x and y values. The zombies are initialised once every second and have their x value increased or decreased depending on whether they have odd or even y values. The image is drawn and deleted in the same way as the sprite described above.
