@@ -9,19 +9,19 @@ I was tasked to build a grid-based game for module 1 'Front End Development' at 
 * [Contents](#Contents)
 * [Project Brief](#Project-Brief)
 * [Technologies](#Technologies)
-* [Grid Design](#Initial-design-and-Wireframes)
+* [Grid Design](#Grid-Design)
 * [Game Mechanics](#Game-Mechanics)
   * [Sprite Movement](#Sprite-Movement)
   * [Zombies](#Zombie-Generation-and-Movement)
   * [Trains](#Train-Generation-and-Movement)
-  * [Detecting Collisions](#Detecting-Collissions)
+  * [Detecting Collisions](#Detecting-Collisions)
   * [Losing the game](#Loss-Logic)
   * [Getting Home](#Getting-Home)
   * [Scoring and losing lives](#Score-and-lives)
   * [Losing](#Loss-Logic)
   * [Winning](#Win-Logic)
 * [Wins and Blockers](#Wins-and-Blockers)
-* [In Conclusion](#in-conclusion)
+* [In Conclusion](#In-Conclusion)
 
 
 ## Project Brief
@@ -87,7 +87,7 @@ I wanted an easy way of adding and removing the zombie elements so that I could 
 I decided to randomise the zombie sprites to add variety to each game. At page load, a random integer is pushed to each array in initZombies. This third integer is used to build the file path to a corresponding zombie sprite.
 
 ## Train Generation and Movement
-The trains are also initialized in a 2D array and advance in the same way that the zombies do. An odd ~~bug~~ feature of the train array is that odd numbered rows need to have their x values entered in ascending order and even rows descending. This is because the advance function will place all of the divs on top of each other if initialised incorrectly.
+The trains are also initialized in a 2D array and advance in the same way that the zombies do. An odd feature of the train array is that odd numbered rows need to have their x values entered in ascending order and even rows descending. This is because the advance function will place all of the divs on top of each other if initialised incorrectly.
 
 ## Detecting Collisions
 This is a fairly simple process of checking whether the user's sprite's x and y position corresponds with a cell that contains .zombie, or if it does not contain .train when above row index 7. if either of these conditions are met then the user's sprite re-initialises to the start position and one life is decremented.
