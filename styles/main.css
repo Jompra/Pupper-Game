@@ -3,6 +3,7 @@
   src: url(../styles/fonts/zoombieland-webfont.woff2) format('woff2'),
   url(../styles/fonts/zoombieland-webfont.woff) format('woff');
 }
+
 .start-box{
   display: flex;
   align-items: center;
@@ -15,6 +16,7 @@
   background-color: rgba(0, 0, 255, 1);
   z-index: 1;
 }
+
 .start-box h1{
   font-family: 'zoombieland', serif;
   font-size: 150px;
@@ -24,15 +26,18 @@
   letter-spacing: 15px;
   margin: 0;
 }
+
 .start-box h2, h3{
   font-family: Arial, Helvetica, sans-serif;
   font-size: 25px;
   color: black;
   text-shadow: 8px 0 10px #ffffff;
 }
+
 .start-box h3{
   font-size: 20px;
 }
+
 .start-box p{
   background-color: rgba(0, 0, 0, 0.5);
   color: lightgray;
@@ -47,7 +52,6 @@
   display: flex;
   justify-content: center;
 }
-
 
 .grid {
   background-image: url(../assets/grid-background.jpeg);
@@ -91,6 +95,7 @@
   height: 100px;
   width: 780px;
 }
+
 .homes div{
   width:150px;
   height: 100px;
@@ -99,6 +104,7 @@
   background-repeat: no-repeat;
   background-size: contain;
 }
+
 .grid div.train{
   background: linear-gradient(180deg, rgba(40,40,40,1) 0%, rgba(107,107,107,1) 50%, rgba(66,66,66,1) 100%);
   background-color: rgba(40,40,40,1);
@@ -107,7 +113,8 @@
   background-repeat: no-repeat;
   background-size: contain;
   
-  }
+}
+
 .grid-wrapper .restart{
   display: none;
   background-image: url(../assets/you-died-background.png);
@@ -124,10 +131,12 @@
   height: 400px;
   width: 780px;
 }
+
 .restart h1{
   font-size: 150px;
   margin: 0;
 }
+
 .start-button, .restart-button{
   height: 50px;
   width: 300px;
@@ -139,6 +148,7 @@
   font-size: 20px;
   font-weight: bold; 
 }
+
 .info-box{
   display: none;
   justify-content: center;
@@ -157,6 +167,7 @@
   padding: 0 50px;
   margin: 0;
 }
+
 .user-numbers p{
   color: grey;
   margin: 0;
@@ -178,10 +189,12 @@
   height: 400px;
   width: 780px;
 }
+
 .won h1{
   font-size: 150px;
   margin: 0;
 }
+
 .won .restart-button2{
   height: 50px;
   width: 300px;
